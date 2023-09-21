@@ -1,10 +1,15 @@
 import express from 'express';
 
 const app = express();
-const PORT = 3000;
+const PORT = 9000;
+const path = require('path');
 
-// Serve static files from the 'public' directory
-app.use(express.static('assets'));
+// Serve static files from the 'dist' directory
+app.use(express.static('dist'));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 app.get('/home', (req, res) => {
     console.log('are we here');
