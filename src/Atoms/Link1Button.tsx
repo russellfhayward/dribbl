@@ -14,7 +14,7 @@ const Button = styled.button`
 
 const Link1Button: React.FC<Link1ButtonProps> = ({children, color, className, onClick}) => {
   return (
-    <Button onClick={onClick} data-cy="link-1-button">Hello</Button>
+    <Button className={className} onClick={onClick} data-cy="link-1-button">Hello</Button>
   )
 }
 

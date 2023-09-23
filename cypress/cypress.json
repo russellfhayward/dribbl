@@ -1,4 +1,6 @@
 {
   "integrationFolder": "src",
-  "testFiles": "**/*.{js,ts,tsx,cy.tsx}"
+  "testFiles": "**/*.{js,ts,tsx,cy.tsx}",
+  "viewportWidth": 1920,
+  "viewportHeight": 1080
 }
