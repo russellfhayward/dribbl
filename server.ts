@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', (req, res) => {
     console.log('are we here');
-    res.send('Hello, TypeScript with Express!');
+    res.send('Hello, TypeScript with Express andnndndndd!');
 });
 
 app.listen(PORT, () => {

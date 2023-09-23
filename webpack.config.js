@@ -47,6 +47,9 @@ module.exports = {
     },
     compress: true,
     port: 8080,
-    hot: true, // Enable hot module replacement
+    hot: true, // Enable hot module replacement,
+    // proxy: {
+    //   '/api': 'http://localhost:9000' // This will be useful once we have an API running on port 9000, it is a way to send all live changes forward to our server
+    // }
   }
 };
