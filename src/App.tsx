@@ -1,25 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
+import DribbleHome from './Layouts/DribblHome';
 
-const Button = styled.button`
-  background-color: blue;
-`
+const HomePageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  // justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+
+const Header = styled.header`
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+  line-height: 8vh;
+  font-size: 2em;
+`;
 
 function App() {
     const toPath = () => {
-     // alert('helllpppp')
       window.location.href = "http://localhost:9000/home";
     }
     return (
-        <div>
-            <h1>Hello, React!</h1>
-            <h1>Hello are you working</h1>
-            <h1>working</h1>
-            <h1>hiowwfa</h1>
-            <h1>hiowrwegrgddergergthergthwfa</h1>
-            <h1>?</h1>
-            <Button onClick={toPath}>hello</Button>
-        </div>
+        <HomePageContainer>
+          <Header data-cy="home-page-header"> Link1 Link2 Link3 Menu</Header>
+            <DribbleHome>
+            </DribbleHome>
+        </HomePageContainer>
     );
 }
 
