@@ -1,12 +1,8 @@
 import { useEffect, useRef, RefObject } from "react";
 
-interface params {
-    ref: React.RefObject<HTMLCanvasElement>
-}
-
 const useCanvas = (canvasRef: RefObject<HTMLCanvasElement>, lineWidth: number, color: string) => {
     const painting = useRef(false);
-
+    
     const draw = (canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) => (e: MouseEvent) => {
         if (!painting.current) return;
         console.log("*** TRYING TO DRAW!")
@@ -24,16 +20,24 @@ const useCanvas = (canvasRef: RefObject<HTMLCanvasElement>, lineWidth: number, c
     };
 
     const startPosition = (draw: (e: MouseEvent) => void) => (e: MouseEvent) => {
-        console.log('MOUSE DOWN!!!');
         painting.current = true;
         draw(e);
     }
 
     const finishedPosition = (context: CanvasRenderingContext2D) => {
-        console.log("Done!!!")
         painting.current = false;
         context.beginPath();
     }
+
+    const clearCanvas = () => {
+        if (!canvasRef.current) return;
+        const context = canvasRef.current.getContext('2d');
+
+        if (!context) return;
+        context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        context.fillStyle = 'white';
+        context.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      };
 
     useEffect(() => {
         const canvas: HTMLCanvasElement | null = canvasRef.current;
@@ -41,10 +45,6 @@ const useCanvas = (canvasRef: RefObject<HTMLCanvasElement>, lineWidth: number, c
 
         const context = canvas.getContext('2d');
         if (!context) return;
-
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.fillStyle = 'white';
-        context.fillRect(-2, -2, canvas.width+6, canvas.height+6);
 
         const boundDraw = draw(canvas, context);
         canvas.addEventListener('mousedown', startPosition(boundDraw));
@@ -56,8 +56,9 @@ const useCanvas = (canvasRef: RefObject<HTMLCanvasElement>, lineWidth: number, c
             window.removeEventListener('mouseup', () => finishedPosition(context));
             canvas.removeEventListener('mousemove', boundDraw);
         }
-    }, [canvasRef, lineWidth, color]); // Don't forget dependencies!
-};
+    }, [canvasRef, color, lineWidth]); 
 
+    return { clearCanvas }
+};
 
 export default useCanvas;

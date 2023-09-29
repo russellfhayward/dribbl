@@ -22,6 +22,7 @@ const DrawingBoardComponent : React.FC<props> = ({children}) => {
 
     const [color, setColor] = React.useState('black');
     const [ lineWidth, setLineWidth ] = React.useState(5);
+    const [clearCanvas, setClearCanvas] = React.useState<(() => void) | undefined>(undefined);
 
     const handleColorChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
         setColor(event.target.value);
@@ -33,8 +34,8 @@ const DrawingBoardComponent : React.FC<props> = ({children}) => {
 
     return (
         <DrawingBoard>
-            <ToolbarComponent color={color} lineWidth={lineWidth} handleColor={handleColorChange} handleLineWidth={handleLineWidthChange}/>
-            <CanvasComponent lineWidth={lineWidth} color={color} /> 
+            {clearCanvas && <ToolbarComponent color={color} lineWidth={lineWidth} handleClear={clearCanvas} handleColor={handleColorChange} handleLineWidth={handleLineWidthChange}/>}
+            <CanvasComponent setClearCanvas={setClearCanvas} lineWidth={lineWidth} color={color} /> 
         </DrawingBoard>
     )
 }

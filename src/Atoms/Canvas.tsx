@@ -12,20 +12,28 @@ const StyledCanvas = styled.canvas`
 interface CanvasComponentProps {
     lineWidth: number,
     color: string,
-    
+    setClearCanvas: (clearCanvas: () => void) => void,
 }
 
-const CanvasComponent : React.FC< CanvasComponentProps & React.CanvasHTMLAttributes<HTMLCanvasElement>> = ({lineWidth, color,...props }) => {
+const CanvasComponent : React.FC< CanvasComponentProps & React.CanvasHTMLAttributes<HTMLCanvasElement>> = ({lineWidth, color, setClearCanvas,...props }) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    useCanvas(canvasRef, lineWidth, color);
+    const { clearCanvas } = useCanvas(canvasRef, lineWidth, color);
 
     useEffect(() => {
         if (canvasRef.current){
+            setClearCanvas(() => clearCanvas);
+
             const rect = canvasRef.current.getBoundingClientRect();
+            
             canvasRef.current.width = rect.width;
-            canvasRef.current.height=rect.height;
+            canvasRef.current.height= rect.height;
+
+            const context = canvasRef.current.getContext('2d');
+            if (!context) return;
+            context.fillStyle = 'white';
+            context.fillRect(0, 0, rect.width, rect.height);
         }
-    })
+    }, [])
 
     return (
         <StyledCanvas ref={canvasRef} {...props}></StyledCanvas>
