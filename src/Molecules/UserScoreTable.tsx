@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const UserScoreBoardWrapper = styled.div`
-  width: 45%;
+  padding: 0 0 0 20px;
 `;
 
 const UserScoreBoard = styled.div`

@@ -5,12 +5,12 @@ import UserChatDisplayComponent from '../Organisms/UserChatDisplay';
 import ChatBoxComponent from '../Molecules/ChatBox';
 
 const DrawingBoardOuter = styled.div`
-  width: 100vw;
-  height: 100vh;
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: 20px;
   flex-direction: column;
-  // border: 3px solid green
+  // border: 3px solid green;
 `;
 
 interface DribbleHomeProps {

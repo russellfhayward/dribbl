@@ -5,11 +5,13 @@ import ChatBoxComponent from '../Molecules/ChatBox';
 
 const TableEntryOuter = styled.div`
   display: flex;
-  width: 100vw;
-  justify-content: space-evenly;
+  width: 80vw;
   // border: 3px solid purple
 `;
 
+const Spanner = styled.span`
+  flex-grow: 1
+`
 interface UserChatDisplayProps {
     className?: string;
     children?: React.ReactNode;
@@ -42,6 +44,7 @@ const UserChatDisplayComponent: React.FC<UserChatDisplayProps> = ({children}) =>
 return (
         <TableEntryOuter>
             <UserScoreBoardComponent users={users}/>
+            <Spanner/>
             <ChatBoxComponent>{children}</ChatBoxComponent>
         </TableEntryOuter>
     )

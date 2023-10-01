@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import Chat from '../Atoms/Chat';
 
 const ChatBoxWrapper = styled.div`
-  width: 45%;
   text-align: center;
   background: lightpink;
+  margin: 0 20px 0 0;
+  // border: 4px solid black;
 `;
 
 interface ChatBoxProps {
@@ -24,6 +25,7 @@ const ChatBoxComponent: React.FC<ChatBoxProps> = ({ children }) => {
   const sendMessage = (text: string) => {
     // Here you would actually send the message to the server,
     // but for this example, we'll just update local state.
+    if (!text) return;
     const newMessage: Message = {
       id: `${Date.now()}`,
       text,

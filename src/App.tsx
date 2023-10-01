@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import DribbleHome from './Layouts/DribblHome';
 
 const HomePageContainer = styled.div`
-  height: 100%;
-  // border: 3px solid orange
+  justify-content: center;
+  // border: 3px solid orange;
 `;
 
 const Header = styled.header`
