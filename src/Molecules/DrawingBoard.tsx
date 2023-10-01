@@ -4,14 +4,14 @@ import CanvasComponent from '../Atoms/Canvas';
 import ToolbarComponent from '../Atoms/Toolbar';
 
 const DrawingBoard = styled.div`
-  width: 100%;
-  height: 100%;
-  flex: 1
+  width: 80vw;
   display: flex;
+  flex-direction: column;
   text-align: center;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   background: lightblue;
+//   border: 3px solid black
 `;
 
 interface props {
