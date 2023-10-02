@@ -14,7 +14,7 @@
     "types": ["cypress"],
     "target": "es5",
     "jsx": "react", // This is the important line
-    // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    //"lib": ["dom", "es2015"],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */
     // "experimentalDecorators": true,                   /* Enable experimental support for legacy experimental decorators. */
     // "emitDecoratorMetadata": true,                    /* Emit design-type metadata for decorated declarations in source files. */
