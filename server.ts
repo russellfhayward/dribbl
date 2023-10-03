@@ -1,37 +1,35 @@
 import express from 'express';
-//import { randomBytes } from 'crypto';
+import http from 'http';
+import cors from 'cors';
+import  path from 'path';
+import { Server } from 'socket.io';
 
 const app = express();
-const PORT = 9000;
-const path = require('path');
-const cors = require('cors');
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin:'*',
+        methods : ['GET', 'POST'], 
+    }
+})
 const bodyParser = require('body-parser');
 
-/*
-routes:
+const corsOptions = {
+    origin: '*', // or an array of allowed origins
+    optionsSuccessStatus: 200
+};
 
-get:
- /
- /getCredentials -- get users session
- /getWordList -- get list of words
- /getRoom -- looks for avail room to put you into
- /
-post:
- /postCredentials -- creates user credentials in db
-put:
-delete:
- /deleteCredentials -- if session is expired .. delete cred & make new
-*/
+app.use(cors(corsOptions));
 
-// const corsOptions = {
-//     origin: '*', // allows all origins for testing purposes
-//     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-//   };
-  
-app.use(cors());
-
+// Serve static files from the 'dist' directory
+app.use(express.static('dist'));
 // Middleware to parse all requests
 app.use(bodyParser.json());
+app.use('/api/v1/getCredentials', (req,res) => {
+    
+})
+const PORT = 9000;
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
@@ -76,9 +74,29 @@ app.delete('/deleteCredentials/:id', (req, res) => {
     console.log('data', data);
   });
 
-// Serve static files from the 'dist' directory
-app.use(express.static('dist'));
+  // Socket.io events
+io.on('connection', (socket) => {
+    console.log('a user connected');
+    console.log("socket: ", socket);
+    // Listen for the event when the button is clicked
+    socket.on('joinGame', () => {
+      console.log('Button clicked, joining game room');
+      
+      // Here you can have your logic for creating or assigning a game room
+      const roomId = 'someUniqueRoomId';
+      
+      socket.join(roomId);
+      
+      // Notify the user they have joined the room
+      io.to(roomId).emit('joinedRoom', roomId);
+    });
+  
+    socket.on('disconnect', () => {
+      console.log('user disconnected');
+    });
+  });
+  
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
