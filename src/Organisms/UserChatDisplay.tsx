@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import * as React from 'react'
 import styled from 'styled-components'
 import UserScoreBoardComponent from '../Molecules/UserScoreTable';
 import ChatBoxComponent from '../Molecules/ChatBox';
@@ -16,7 +16,7 @@ interface UserChatDisplayProps {
     className?: string;
     children?: React.ReactNode;
   }
-const UserChatDisplayComponent: React.FC<UserChatDisplayProps> = ({children}) => {
+const UserChatDisplayComponent: React.FC<UserChatDisplayProps> = ({ children }) => {
 
     const users = [
         {place: 1, name: 'jimbo', icon: 'icon1.png'},
@@ -43,7 +43,7 @@ const UserChatDisplayComponent: React.FC<UserChatDisplayProps> = ({children}) =>
 
 return (
         <TableEntryOuter>
-            <UserScoreBoardComponent users={users}/>
+            <UserScoreBoardComponent users={users} />
             <Spanner/>
             <ChatBoxComponent>{children}</ChatBoxComponent>
         </TableEntryOuter>

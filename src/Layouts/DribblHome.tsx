@@ -1,8 +1,7 @@
-import * as React from 'react'
-import styled from 'styled-components'
+import * as React from 'react';
+import styled from 'styled-components';
 import DrawingBoardComponent from '../Molecules/DrawingBoard';
 import UserChatDisplayComponent from '../Organisms/UserChatDisplay';
-import ChatBoxComponent from '../Molecules/ChatBox';
 
 const DrawingBoardOuter = styled.div`
   display: flex;
@@ -22,8 +21,8 @@ const DribbleHome: React.FC<DribbleHomeProps> = ({className, children}) => {
   
   return (
     <DrawingBoardOuter>
-      <DrawingBoardComponent/>
-      <UserChatDisplayComponent/>
+      <DrawingBoardComponent />
+      <UserChatDisplayComponent />
     </DrawingBoardOuter>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import Chat from '../Atoms/Chat';
+import { io } from 'socket.io-client';
 
 const ChatBoxWrapper = styled.div`
   text-align: center;
@@ -20,8 +21,10 @@ interface Message {
   }
 
 const ChatBoxComponent: React.FC<ChatBoxProps> = ({ children }) => {
+  const socket = io('http://localhost:9000');
   const [messages, setMessages] = useState<Message[]>([]);
-
+  socket.emit('clientMessage', 'Hello from the client side!');
+ 
   const sendMessage = (text: string) => {
     // Here you would actually send the message to the server,
     // but for this example, we'll just update local state.
