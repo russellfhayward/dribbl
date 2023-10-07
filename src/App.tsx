@@ -14,7 +14,7 @@ const Header = styled.header`
   // border: 3px solid blue
 `;
 
-function App() {
+ const App: React.FC = ({}) => {
     return (
         <HomePageContainer>
           <Header data-cy="home-page-header"> Link1 Link2 Link3 Menu</Header>

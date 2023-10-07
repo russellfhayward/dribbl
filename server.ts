@@ -76,8 +76,12 @@ app.delete('/deleteCredentials/:id', (req, res) => {
 
   // Socket.io events
 io.on('connection', (socket) => {
+      // Emit the testEvent immediately after a client connects
+      socket.emit('testEvent', 'Hello from server');
+      socket.on('clientMessage', (data) => {
+        console.log('message from client: ', data);
+      });
     console.log('a user connected');
-    console.log("socket: ", socket);
     // Listen for the event when the button is clicked
     socket.on('joinGame', () => {
       console.log('Button clicked, joining game room');
