@@ -1,27 +1,27 @@
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
   
-interface ChatProps {
-    sendMessage: (message: string) => void;
-}
+// interface ChatProps {
+//     sendMessage: (message: string) => void;
+// }
   
-  const Chat: React.FC<ChatProps> = ({ sendMessage }) => {
-    const [message, setMessage] = useState('');
+//   const Chat: React.FC<ChatProps> = ({ sendMessage }) => {
+//     const [message, setMessage] = useState('');
   
-    const handleSendMessage = () => {
-      sendMessage(message);
-      setMessage('');
-    };
+//     const handleSendMessage = () => {
+//       sendMessage(message);
+//       setMessage('');
+//     };
   
-    return (
-      <div>
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button onClick={handleSendMessage}>Send</button>
-      </div>
-    );
-  };
+//     return (
+//       <div>
+//         <input
+//           type="text"
+//           value={message}
+//           onChange={(e) => setMessage(e.target.value)}
+//         />
+//         <button onClick={handleSendMessage}>Send</button>
+//       </div>
+//     );
+//   };
 
-export default Chat
+// export default Chat
