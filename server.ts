@@ -75,30 +75,33 @@ app.delete('/deleteCredentials/:id', (req, res) => {
   });
 
   // Socket.io events
-io.on('connection', (socket) => {
-      // Emit the testEvent immediately after a client connects
-      socket.emit('testEvent', 'Hello from server');
-      socket.on('clientMessage', (data) => {
-        console.log('message from client: ', data);
-      });
-    console.log('a user connected');
-    // Listen for the event when the button is clicked
-    socket.on('joinGame', () => {
-      console.log('Button clicked, joining game room');
-      
-      // Here you can have your logic for creating or assigning a game room
-      const roomId = 'someUniqueRoomId';
-      
-      socket.join(roomId);
-      
-      // Notify the user they have joined the room
-      io.to(roomId).emit('joinedRoom', roomId);
-    });
-  
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
+io.on('connection', (socket) => { 
+
+  console.log('a user connected');
+
+  socket.on('message', (msg) => {
+    console.log(msg);
+    io.emit('message',msg);
+  })
+
+  // Listen for the event when the button is clicked
+  socket.on('joinGame', () => {
+    console.log('Button clicked, joining game room');
+    
+    // Here you can have your logic for creating or assigning a game room
+    const roomId = 'someUniqueRoomId';
+    
+    socket.join(roomId);
+    
+    // Notify the user they have joined the room
+    io.to(roomId).emit('joinedRoom', roomId);
   });
+  
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+
+});
   
 
 server.listen(PORT, () => {

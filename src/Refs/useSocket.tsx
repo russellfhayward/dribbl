@@ -1,18 +1,44 @@
-import { useEffect, useRef } from 'react';
-import {io, Socket} from 'socket.io-client';
+import { useState, useEffect, useRef } from 'react';
+import { Socket, io } from 'socket.io-client';
 
-export const useSocket = (serverUrl: string) => {
-  const socketRef = useRef<Socket>();
+function useSocket(url: string) {
+  const socketRef = useRef<Socket | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Initialize socket connection when the component mounts
-    socketRef.current = io(serverUrl);
+    socketRef.current = io(url);
 
-    // Clean up the connection when the component unmounts
+    socketRef.current.on('connect', () => {
+      console.log('Client side connected');
+    });
+
+    socketRef.current.on('message', (msg: string) => {
+      console.log("Received from server: ", msg);
+      setMessage(msg);
+    });
+
+    socketRef.current.on('disconnect', () => {
+      console.log('Disconnected');
+    });
+
     return () => {
-      if (socketRef.current) socketRef.current.disconnect();
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
     };
-  }, [serverUrl]);
+  }, [url]);
 
-  return socketRef.current;
-};
+  const sendMessage = (msg: string) => {
+    if (socketRef.current) {
+      socketRef.current.emit('message', msg);
+    }
+  };
+
+  return {
+    socket: socketRef.current,
+    message,
+    sendMessage
+  };
+}
+
+export default useSocket;
