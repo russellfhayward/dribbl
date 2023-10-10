@@ -6,6 +6,7 @@ import ChatBoxComponent from '../Molecules/ChatBox';
 const TableEntryOuter = styled.div`
   display: flex;
   width: 80vw;
+  height: 32vh;  // 100% of the viewport height.
   // border: 3px solid purple
 `;
 
