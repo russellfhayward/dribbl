@@ -13,12 +13,35 @@ const UserScoreBoard = styled.div`
 
 const UserCard = styled.div`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  margin: 5px 0;
+  background: linear-gradient(to bottom, #E8E8E8, #FFFFFF);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  font-size: 1.2rem;
+`;
+
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 50px;
-  align-items: baseline;
-  padding: 0 20px;
-  margin: 9px;
-  border-bottom: 1px solid #ccc;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+`;
+
+const Score = styled.div`
+  font-weight: bold;
+  color: #444;
+  margin-right: 10px;
+`;
+
+const UserName = styled.div`
+  flex-grow: 1;
+  text-align: center;
 `;
 
 interface User {
@@ -34,9 +57,9 @@ interface UserScoreBoardProps {
 const renderUserCards = (users: User[]) => {
   return users.map((user, index) => (
     <UserCard key={index}>
-      <div>#{user.place}</div>
-      <div>{user.name}</div>
-      <div><img src={user.icon} /*alt={`${user.name}'s icon`}*/ /></div>
+      <Score>#{user.place}</Score>
+      <UserName>{user.name}</UserName>
+      <IconWrapper>{user.icon}</IconWrapper> {/* If using actual icons, replace this line */}
     </UserCard>
   ));
 }

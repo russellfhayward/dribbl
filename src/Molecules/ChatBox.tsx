@@ -8,10 +8,12 @@ const ChatBoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  text-align: center;
-  background: lightpink;
-  margin: 0 20px 0 0;
-  height: 100%;
+  width: 60%;  // Take up more space for the chat
+  background-color: #FFFFFF;  // White background for the chat area
+  border-left: 2px solid #ccc;  // Separator between scoreboard and chat
+  border-bottom: 2px solid #ccc;
+  border-right: 2px solid #ccc;
+  padding: 10px;  // Some padding around the chat
 `;
 
 // const MessagesContainer = styled.div`
@@ -54,10 +56,12 @@ interface Message {
 // }
 
 const ChatBoxComponent: React.FC<ChatBoxProps> = ({ children }) => {
-  const { sendMessage, message } = useSocket('http://localhost:9000');
+  const { socket, sendMessage, message } = useSocket('http://localhost:9000');
   const [messages, setMessages] = useState<Message[]>([]);
 
+  
   useEffect(() => {
+    console.log("socket from server!!!!: ",socket);
     console.log("Current list of messages: ",messages)
     if (message) {
       console.log("Appending to list: ", message);
@@ -67,9 +71,8 @@ const ChatBoxComponent: React.FC<ChatBoxProps> = ({ children }) => {
   
   return (
     <ChatBoxWrapper>
-      <div>The Message Display Will Go Here</div>
-      <ChatInput sendMessage={sendMessage} />
       <MessageList messages={messages}/>
+      <ChatInput sendMessage={sendMessage} />
     </ChatBoxWrapper>
   );
 };
