@@ -1,123 +1,78 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { io, Socket } from 'socket.io-client';
+import ChatInput from '../Atoms/ChatInput';
+import useSocket from "../Refs/useSocket"
+import MessageList from '../Atoms/MessageDisplay';
 
 const ChatBoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  text-align: center;
-  background: lightpink;
-  margin: 0 20px 0 0;
-  height: 100%;
+  width: 60%;  // Take up more space for the chat
+  background-color: #FFFFFF;  // White background for the chat area
+  border-left: 2px solid #ccc;  // Separator between scoreboard and chat
+  border-bottom: 2px solid #ccc;
+  border-right: 2px solid #ccc;
+  padding: 10px;  // Some padding around the chat
 `;
 
-const MessagesContainer = styled.div`
-  height: 75%;
-  min-height: 75%;
-  width: 99%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  border: 1px solid blue;
-  overflow-wrap: break-word;
-`;
+// const MessagesContainer = styled.div`
+//   height: 75%;
+//   min-height: 75%;
+//   width: 99%;
+//   overflow-y: auto;
+//   overflow-x: hidden;
+//   border: 1px solid blue;
+//   overflow-wrap: break-word;
+// `;
 
-const ChatInputBox = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 25%;
-`;
+// const ChatInputBox = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   height: 25%;
+// `;
 
-const ChatInput = styled.input`
-  width: 75%;
-  overflow-wrap: break-word;
-`;
-const ChatSend = styled.button`
-  width: 25%;
-  overflow-wrap: break-word;
-`;
+// const ChatInput = styled.input`
+//   width: 75%;
+//   overflow-wrap: break-word;
+// `;
+
+// const ChatSend = styled.button`
+//   width: 25%;
+//   overflow-wrap: break-word;
+// `;
 
 interface ChatBoxProps {
   children?: React.ReactNode;
 }
 
 interface Message {
-  date: string;
   text: string;
-  sender: string;
 }
 
-interface Acknowledgment {
-  success: boolean;
-}
+// interface Acknowledgment {
+//   success: boolean;
+// }
 
 const ChatBoxComponent: React.FC<ChatBoxProps> = ({ children }) => {
-  const socketRef = useRef<Socket | null>(null);
-  const [inputValue, setInputValue] = useState('');
+  const { socket, sendMessage, message } = useSocket('http://localhost:9000');
   const [messages, setMessages] = useState<Message[]>([]);
-  const [id, setID] = useState('');
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
+  
   useEffect(() => {
-    socketRef.current = io('http://localhost:9000');
-
-    socketRef.current.on('yourId', (id) => {
-      setID(id);
-    });
-
-    socketRef.current.on('newMessage', (message: Message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
-    });
-
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.off('yourId');
-        socketRef.current.off('newMessage');
-      }
-    };
-  }, []);
-
-  const sendMessage = () => {
-    if (inputValue.trim() === '') return;
-
-    const newMessage: Message = {
-      date: `${Date.now()}`,
-      text: inputValue,
-      sender: id
-    };
-
-    if (socketRef.current) {
-      socketRef.current.emit('clientMessage', newMessage, (acknowledgement: Acknowledgment) => {
-        if (acknowledgement.success) {
-          setMessages((prevMessages) => [...prevMessages, newMessage]);
-          setInputValue('');
-        } else {
-          console.error('Message sending failed.');
-        }
-      });
+    console.log("socket from server!!!!: ",socket);
+    console.log("Current list of messages: ",messages)
+    if (message) {
+      console.log("Appending to list: ", message);
+      setMessages((prev) => [...prev, { text: message }]);
     }
-  };
-
+  }, [message]);
+  
   return (
     <ChatBoxWrapper>
-      <div>Dribbl Chat</div>
-      <MessagesContainer>
-      <div>
-        {messages.map((message, index) => (
-          <div key={index}>
-            <strong>{message.sender}</strong>{message.text}
-          </div>
-        ))}
-      </div>
-      </MessagesContainer>
-      < ChatInputBox>
-          <ChatInput value={inputValue} onChange={handleInputChange} />
-          <ChatSend onClick={sendMessage}>Send</ChatSend>
-        </ChatInputBox>
+      <MessageList messages={messages}/>
+      <ChatInput sendMessage={sendMessage} />
     </ChatBoxWrapper>
   );
 };

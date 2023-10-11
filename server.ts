@@ -32,36 +32,35 @@ app.delete('/deleteCredentials/:id', (req, res) => {
     res.json({ message: `Item with ID: ${itemId} has been deleted.` });
 });
 
-// Socket.io events
-io.on('connection', (socket) => {
-    console.log('A user connected', socket.id);
-    socket.emit('yourId', socket.id);
+  // Socket.io events
+io.on('connection', (socket) => { 
 
-    socket.on('clientMessage', (message, callback) => {
-        console.log('Message from client:', message);
+  console.log('a user connected');
 
-        // Handle the message...
-        if (typeof callback === 'function') {
-            callback({ success: true });
-        }
+  socket.on('message', (msg) => {
+    console.log(msg);
+    io.emit('message',msg);
+  })
 
-        // Broadcast the message to all other clients
-        socket.broadcast.emit('newMessage', message);
-    });
+  // Listen for the event when the button is clicked
+  socket.on('joinGame', () => {
+    console.log('Button clicked, joining game room');
+    
+    // Here you can have your logic for creating or assigning a game room
+    const roomId = 'someUniqueRoomId';
+    
+    socket.join(roomId);
+    
+    // Notify the user they have joined the room
+    io.to(roomId).emit('joinedRoom', roomId);
+  });
+  
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
 
-    socket.on('joinGame', () => {
-        console.log('Button clicked, joining game room');
-        
-        const roomId = 'someUniqueRoomId';
-        socket.join(roomId);
-        
-        io.to(roomId).emit('joinedRoom', roomId);
-    });
-
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    });
 });
+  
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
