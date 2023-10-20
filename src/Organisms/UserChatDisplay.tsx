@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import UserScoreBoardComponent from '../Molecules/UserScoreTable';
 import ChatBoxComponent from '../Molecules/ChatBox';
+import GuessingComponent from '../Molecules/GuessingComponent';
 
 const TableEntryOuter = styled.div`
   display: flex;
@@ -45,7 +46,8 @@ const UserChatDisplayComponent: React.FC<UserChatDisplayProps> = ({ children }) 
 return (
         <TableEntryOuter>
             <UserScoreBoardComponent users={users} />
-            <Spanner/>
+            <GuessingComponent word='example'/>
+            {/* <Spanner/> */}
             <ChatBoxComponent>{children}</ChatBoxComponent>
         </TableEntryOuter>
     )

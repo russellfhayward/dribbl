@@ -1,18 +1,27 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
+import session from 'express-session';
+import {createClient} from 'redis';
+import RedisStore from 'connect-redis';
 import http from 'http';
 import cors from 'cors';
 import path from 'path';
+
 import { Server } from 'socket.io';
 import bodyParser from 'body-parser';
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: '*',
-        methods: ['GET', 'POST'],
-    }
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  }
 });
+
+// Redis Client creation && Session-Redis connection
+const redisClient = createClient();
+redisClient.connect().catch(console.error)
+const redisStore = new RedisStore({ client: redisClient, prefix: "dribbl:" });
 
 const PORT = 9000;
 
@@ -20,9 +29,19 @@ const PORT = 9000;
 app.use(cors({ origin: '*' }));
 app.use(bodyParser.json());
 app.use(express.static('dist'));
+app.use(
+  session({
+    store: redisStore,
+    secret: 'keyboard', // Choose a strong secret
+    resave: false, // Don't resave the session if unmodified
+    saveUninitialized: true, // Don't create session until something is stored
+    cookie: { maxAge: 2592000000, secure: false }  // Set cookie expiration to 30 days (in milliseconds)
+  })
+);
 
 // Routes
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
+
     res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
