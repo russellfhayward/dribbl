@@ -16,33 +16,6 @@ const ChatBoxWrapper = styled.div`
   padding: 10px;  // Some padding around the chat
 `;
 
-// const MessagesContainer = styled.div`
-//   height: 75%;
-//   min-height: 75%;
-//   width: 99%;
-//   overflow-y: auto;
-//   overflow-x: hidden;
-//   border: 1px solid blue;
-//   overflow-wrap: break-word;
-// `;
-
-// const ChatInputBox = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 25%;
-// `;
-
-// const ChatInput = styled.input`
-//   width: 75%;
-//   overflow-wrap: break-word;
-// `;
-
-// const ChatSend = styled.button`
-//   width: 25%;
-//   overflow-wrap: break-word;
-// `;
-
 interface ChatBoxProps {
   children?: React.ReactNode;
 }
@@ -50,10 +23,6 @@ interface ChatBoxProps {
 interface Message {
   text: string;
 }
-
-// interface Acknowledgment {
-//   success: boolean;
-// }
 
 const ChatBoxComponent: React.FC<ChatBoxProps> = ({ children }) => {
   const { socket, sendMessage, message } = useSocket('http://localhost:9000');
