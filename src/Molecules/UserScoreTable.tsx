@@ -1,5 +1,8 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import ScoresReducer from '../Slices/ScoresReducer';
 
 const UserScoreBoardWrapper = styled.div`
   padding: 0 0 0 20px;
@@ -44,9 +47,15 @@ const UserName = styled.div`
   text-align: center;
 `;
 
+const Scores = styled.div`
+  flex-grow: 1;
+  text-align: center;
+`;
+
 interface User {
   place: number;
   name: string;
+  score: number;
   icon: string;
 }
 
@@ -54,11 +63,29 @@ interface UserScoreBoardProps {
   users: User[];
 }
 
-const renderUserCards = (users: User[]) => {
+
+ 
+  const renderUserCards = (users: User[]) => {
+    const [score, setScore] = useState(0);
+    useEffect(() => {
+      setScore(users[0].score)
+  },[users])
+    const updateScore = (score: number) => {
+      return {
+          type: 'UPDATE_SCORE',
+          payload: score
+      };
+  };
+  const dispatch = useDispatch();
+  const handleScoreUpdate = () => {
+    dispatch(updateScore(score));
+};
+console.log('score', score);
   return users.map((user, index) => (
     <UserCard key={index}>
       <Score>#{user.place}</Score>
       <UserName>{user.name}</UserName>
+      <Scores>{user.score}</Scores>
       <IconWrapper>{user.icon}</IconWrapper> {/* If using actual icons, replace this line */}
     </UserCard>
   ));
